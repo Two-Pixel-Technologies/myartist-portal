@@ -457,8 +457,76 @@ function updateDropdownLabel(el, filterKey) {
 
 function closeAllDropdowns(except) {
   document.querySelectorAll(".fdropdown.is-open").forEach(d => {
-    if (d !== except) d.classList.remove("is-open");
+    if (d !== except) {
+      d.classList.remove("is-open");
+      resetDropdownPanelPosition(d);
+    }
   });
+}
+
+// The mobile filter bar scrolls horizontally (overflow-x: auto), which per the
+// CSS spec auto-computes overflow-y to "auto" too — so a plain
+// position:absolute panel gets vertically clipped by that same bar instead of
+// floating above the page. Below this breakpoint we instead switch the open
+// panel to position:fixed with a JS-computed viewport position, which escapes
+// that clipping ancestor entirely (fixed elements aren't confined by a
+// non-transformed ancestor's overflow). Desktop/tablet keep the original
+// CSS-only position:absolute behavior untouched.
+const MOBILE_DROPDOWN_BREAKPOINT = 640;
+function isMobileDropdownLayout() {
+  return window.innerWidth <= MOBILE_DROPDOWN_BREAKPOINT;
+}
+
+function resetDropdownPanelPosition(fdropdownEl) {
+  const panel = fdropdownEl.querySelector(".fdropdown-panel");
+  panel.style.position = "";
+  panel.style.top = "";
+  panel.style.left = "";
+  panel.style.right = "";
+  panel.style.width = "";
+  panel.style.visibility = "";
+  panel.style.opacity = "";
+}
+
+function positionDropdownPanel(fdropdownEl) {
+  const panel = fdropdownEl.querySelector(".fdropdown-panel");
+
+  if (!isMobileDropdownLayout()) {
+    resetDropdownPanelPosition(fdropdownEl);
+    return;
+  }
+
+  const trigger = fdropdownEl.querySelector(".fdropdown-trigger");
+  const triggerRect = trigger.getBoundingClientRect();
+  const margin = 12;
+  const gap = 8;
+  const panelWidth = Math.max(200, triggerRect.width);
+  const viewportW = window.innerWidth;
+  const viewportH = window.innerHeight;
+
+  // measure the panel's natural height off-screen before committing to a
+  // final position, so we know whether it fits below or needs to flip above
+  panel.style.position = "fixed";
+  panel.style.visibility = "hidden";
+  panel.style.top = "0px";
+  panel.style.left = "0px";
+  panel.style.width = panelWidth + "px";
+  const panelHeight = panel.offsetHeight;
+
+  const spaceBelow = viewportH - triggerRect.bottom - margin;
+  const spaceAbove = triggerRect.top - margin;
+  const openUpward = panelHeight > spaceBelow && spaceAbove > spaceBelow;
+
+  let top = openUpward ? (triggerRect.top - panelHeight - gap) : (triggerRect.bottom + gap);
+  top = Math.max(margin, Math.min(top, viewportH - margin - panelHeight));
+
+  let left = triggerRect.left;
+  left = Math.max(margin, Math.min(left, viewportW - margin - panelWidth));
+
+  panel.style.left = left + "px";
+  panel.style.top = top + "px";
+  panel.style.right = "auto";
+  panel.style.visibility = "";
 }
 
 function initDropdowns() {
@@ -474,7 +542,10 @@ function initDropdowns() {
       e.stopPropagation();
       const isOpen = el.classList.contains("is-open");
       closeAllDropdowns();
-      el.classList.toggle("is-open", !isOpen);
+      if (!isOpen) {
+        el.classList.add("is-open");
+        positionDropdownPanel(el);
+      }
     });
 
     el.querySelector(".fdropdown-panel").addEventListener("click", e => {
@@ -484,10 +555,22 @@ function initDropdowns() {
       renderDropdownPanel(el, filterKey);
       updateDropdownLabel(el, filterKey);
       el.classList.remove("is-open");
+      resetDropdownPanelPosition(el);
     });
   });
 
   document.addEventListener("click", () => closeAllDropdowns());
+
+  // keep the open panel correctly placed if the viewport changes size/orientation
+  // or the mobile filter bar is scrolled horizontally underneath it
+  window.addEventListener("resize", () => {
+    const openEl = document.querySelector(".fdropdown.is-open");
+    if (openEl) positionDropdownPanel(openEl);
+  });
+  filterBar.addEventListener("scroll", () => {
+    const openEl = document.querySelector(".fdropdown.is-open");
+    if (openEl) positionDropdownPanel(openEl);
+  });
 }
 
 function applyDropdownSelection(filterKey, rawValue) {
