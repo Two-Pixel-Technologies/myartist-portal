@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MyArtist — View Artists</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="bg-decor">
+  <div class="glow glow-orange"></div>
+  <div class="glow glow-purple"></div>
+  <div class="glow glow-teal"></div>
+</div>
+
+<!-- NAVBAR -->
+<header class="navbar" id="navbar">
+  <div class="container navbar__inner">
+    <a href="https://myartist.in/" class="logo" aria-label="MyArtist home">
+      <img class="brand-mark" src="assets/myartist-mark.png" alt="" />
+      <span class="brand-name" aria-hidden="true"><span class="brand-name__my">my</span><span class="brand-name__artist">artist</span><span class="brand-name__domain">.in</span></span>
+    </a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#" class="nav-disabled" aria-disabled="true">About</a>
+      <a href="#" class="nav-disabled" aria-disabled="true">For Hiring</a>
+      <a href="#" class="nav-disabled" aria-disabled="true">For Artists</a>
+      <a href="#" class="is-current" aria-current="page">View Artists</a>
+      <a href="#" class="nav-disabled" aria-disabled="true">Contact</a>
+    </nav>
+
+    <div class="navbar__actions">
+      <a href="#" class="btn btn--outline btn--sm nav-disabled" aria-disabled="true">Join Waitlist</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- HERO -->
+<section class="hero" id="artists">
+  <div class="hero-inner">
+    <span class="eyebrow">MyArtist Artists</span>
+    <h1 class="hero-title">Discover The Right Artist<br />For <span class="text-accent">Your Event.</span></h1>
+    <p class="hero-sub">Explore talented artists across categories, locations and event types.</p>
+
+    <div class="search-wrap">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+        <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <input type="text" id="searchInput" class="search-input" placeholder="Search by artist type, skill, location..." autocomplete="off" />
+    </div>
+  </div>
+</section>
+
+<!-- FILTER TOOLBAR -->
+<section class="filter-bar-section">
+  <div class="container">
+    <div class="filter-bar" id="filterBar">
+
+      <div class="fdropdown" data-filter="category">
+        <button type="button" class="fdropdown-trigger">
+          <span class="fdropdown-label">Category</span><span class="chev"></span>
+        </button>
+        <div class="fdropdown-panel"></div>
+      </div>
+
+      <div class="fdropdown" data-filter="location">
+        <button type="button" class="fdropdown-trigger">
+          <span class="fdropdown-label">Location</span><span class="chev"></span>
+        </button>
+        <div class="fdropdown-panel"></div>
+      </div>
+
+      <div class="fdropdown" data-filter="eventType">
+        <button type="button" class="fdropdown-trigger">
+          <span class="fdropdown-label">Event Type</span><span class="chev"></span>
+        </button>
+        <div class="fdropdown-panel"></div>
+      </div>
+
+      <div class="fdropdown" data-filter="rating">
+        <button type="button" class="fdropdown-trigger">
+          <span class="fdropdown-label">Rating</span><span class="chev"></span>
+        </button>
+        <div class="fdropdown-panel"></div>
+      </div>
+
+      <div class="fdropdown" data-filter="experience">
+        <button type="button" class="fdropdown-trigger">
+          <span class="fdropdown-label">Experience</span><span class="chev"></span>
+        </button>
+        <div class="fdropdown-panel"></div>
+      </div>
+
+      <div class="fdropdown" data-filter="sort">
+        <button type="button" class="fdropdown-trigger">
+          <span class="fdropdown-label">Sort: Relevance</span><span class="chev"></span>
+        </button>
+        <div class="fdropdown-panel"></div>
+      </div>
+
+      <button class="btn-clear-filters" id="clearFiltersBtn">Clear Filters</button>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results-section">
+  <div class="results-header">
+    <p id="resultCount" class="result-count">16 Artists Available</p>
+  </div>
+
+  <div id="artistGrid" class="artist-grid"></div>
+
+  <div id="emptyState" class="empty-state" hidden>
+    <div class="empty-icon">✦</div>
+    <h3>No artists found</h3>
+    <p>Try adjusting your filters or search.</p>
+    <button class="btn-clear-filters" id="emptyClearBtn">Clear Filters</button>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="about-portal">
+  <div class="about-inner">
+    <h2 class="section-title">A Premium Space For Discovering Talent</h2>
+    <p class="section-sub">
+      MyArtist connects event organizers with verified performers across India — from folk artists
+      and musicians to dancers, hosts and comedians. This prototype showcases how discovery,
+      filtering and artist requests will feel once connected to real backend data.
+    </p>
+    <div class="about-grid">
+      <div class="about-card">
+        <svg class="about-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l16 16M4 20L20 4" stroke-linecap="round"/><circle cx="12" cy="12" r="9" opacity="0.4"/></svg>
+        <h4>Curated Categories</h4>
+        <p>Browse performers organized by craft, not just keywords.</p>
+      </div>
+      <div class="about-card">
+        <svg class="about-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.4"/></svg>
+        <h4>Location Aware</h4>
+        <p>Find artists close to your event city across India.</p>
+      </div>
+      <div class="about-card">
+        <svg class="about-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L12 16.9 6.4 20.1l1.4-6.3-4.8-4.3 6.4-.6L12 3z" stroke-linejoin="round"/></svg>
+        <h4>Rated &amp; Experienced</h4>
+        <p>Every profile reflects real performance history and ratings.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer" id="contact">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img class="brand-mark" src="assets/myartist-mark.png" alt="" />
+      <span class="brand-name" aria-hidden="true"><span class="brand-name__my">my</span><span class="brand-name__artist">artist</span><span class="brand-name__domain">.in</span></span>
+    </div>
+    <p class="footer-text">Premium artist discovery, made simple. This is a frontend prototype for internal review.</p>
+    <p class="footer-copy">© 2026 MyArtist. Prototype build — no real data is stored or transmitted.</p>
+  </div>
+</footer>
+
+<!-- DETAILS MODAL -->
+<div class="modal-overlay" id="detailsModal">
+  <div class="modal glass-modal" role="dialog" aria-modal="true">
+    <button class="modal-close" data-close-modal>&times;</button>
+    <div id="detailsContent" class="details-content"></div>
+  </div>
+</div>
+
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal glass-modal" role="dialog" aria-modal="true">
+    <button class="modal-close" data-close-modal>&times;</button>
+
+    <div id="contactFormView">
+      <span class="eyebrow">Get In Touch</span>
+      <h3 class="modal-title">Interested In This Artist?</h3>
+      <p class="modal-sub">Send a request to the MyArtist team and we'll help you connect with the right talent.</p>
+
+      <form id="contactForm" class="contact-form" novalidate>
+        <input type="hidden" id="contactArtistId" />
+
+        <div class="form-row">
+          <label for="contactName">Name</label>
+          <input type="text" id="contactName" name="name" placeholder="Your full name" />
+          <span class="field-error" id="err-contactName"></span>
+        </div>
+
+        <div class="form-row">
+          <label for="contactEmail">Email</label>
+          <input type="email" id="contactEmail" name="email" placeholder="you@example.com" />
+          <span class="field-error" id="err-contactEmail"></span>
+        </div>
+
+        <div class="form-row">
+          <label for="contactEventType">Event Type</label>
+          <input type="text" id="contactEventType" name="eventType" placeholder="e.g. Wedding, Corporate Event" />
+          <span class="field-error" id="err-contactEventType"></span>
+        </div>
+
+        <div class="form-row">
+          <label for="contactEventLocation">Event Location</label>
+          <input type="text" id="contactEventLocation" name="eventLocation" placeholder="City" />
+          <span class="field-error" id="err-contactEventLocation"></span>
+        </div>
+
+        <div class="form-row">
+          <label for="contactMessage">Message / Requirement</label>
+          <textarea id="contactMessage" name="message" rows="4" placeholder="Tell us a bit about your event..."></textarea>
+          <span class="field-error" id="err-contactMessage"></span>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--full">Send Request</button>
+      </form>
+    </div>
+
+    <div id="contactSuccessView" class="success-view" hidden>
+      <div class="success-icon">✓</div>
+      <h3 class="modal-title">Request Received</h3>
+      <p class="modal-sub">Your request has been submitted to the MyArtist team. We'll get in touch with you shortly.</p>
+      <button class="btn btn--primary btn--full" data-close-modal>Done</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
