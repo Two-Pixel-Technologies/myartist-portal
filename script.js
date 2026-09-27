@@ -570,7 +570,6 @@ function renderArtists() {
     return `
     <article class="artist-card" data-id="${artist.id}">
       <div class="card-visual" style="${visualStyle}">
-        <span class="card-id-tag">#${artist.id}</span>
         ${image ? "" : `<span class="icon-badge" style="--card-accent:${hex}; --card-accent-border:${hex}40; --card-accent-bg:${hex}14;">${icon}</span>`}
       </div>
       <div class="card-body">
@@ -641,9 +640,12 @@ artistGrid.addEventListener("click", e => {
 // =====================================================
 
 function openDetailsModal(artist) {
-  const { hex, icon } = getCategoryVisual(artist.category);
+  const { hex, icon, image } = getArtistVisual(artist);
+  const visualStyle = image
+    ? `background-image: linear-gradient(180deg, rgba(8,8,15,0.05) 0%, rgba(8,8,15,0.55) 100%), url('${image}'); background-size: cover; background-position: center;`
+    : `background: radial-gradient(circle at 50% 30%, ${hex}22, transparent 70%); color:${hex};`;
   detailsContent.innerHTML = `
-    <div class="detail-visual" style="background: radial-gradient(circle at 50% 30%, ${hex}22, transparent 70%); color:${hex};">${icon}</div>
+    <div class="detail-visual" style="${visualStyle}">${image ? "" : icon}</div>
     <h2 class="detail-category">${artist.category}</h2>
     <p class="detail-id">Profile #${artist.id}</p>
 
