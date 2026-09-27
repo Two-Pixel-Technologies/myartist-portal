@@ -165,8 +165,8 @@
       <img class="brand-mark" src="assets/myartist-mark.png" alt="" />
       <span class="brand-name" aria-hidden="true"><span class="brand-name__my">my</span><span class="brand-name__artist">artist</span><span class="brand-name__domain">.in</span></span>
     </div>
-    <p class="footer-text">Premium artist discovery, made simple. This is a frontend prototype for internal review.</p>
-    <p class="footer-copy">© 2026 MyArtist. Prototype build — no real data is stored or transmitted.</p>
+    <p class="footer-text">Premium artist discovery, made simple.</p>
+    <p class="footer-copy">© 2026 MyArtist. Artist Portal prototype - for review purposes.</p>
   </div>
 </footer>
 
@@ -174,7 +174,9 @@
 <div class="modal-overlay" id="detailsModal">
   <div class="modal glass-modal" role="dialog" aria-modal="true">
     <button class="modal-close" data-close-modal>&times;</button>
-    <div id="detailsContent" class="details-content"></div>
+    <div class="modal-scroll">
+      <div id="detailsContent" class="details-content"></div>
+    </div>
   </div>
 </div>
 
@@ -182,6 +184,7 @@
 <div class="modal-overlay" id="contactModal">
   <div class="modal glass-modal" role="dialog" aria-modal="true">
     <button class="modal-close" data-close-modal>&times;</button>
+    <div class="modal-scroll">
 
     <div id="contactFormView">
       <span class="eyebrow">Get In Touch</span>
@@ -230,6 +233,7 @@
       <h3 class="modal-title">Request Received</h3>
       <p class="modal-sub">Your request has been submitted to the MyArtist team. We'll get in touch with you shortly.</p>
       <button class="btn btn--primary btn--full" data-close-modal>Done</button>
+    </div>
     </div>
   </div>
 </div>

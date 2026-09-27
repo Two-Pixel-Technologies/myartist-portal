@@ -754,20 +754,25 @@ img { max-width: 100%; display: block; }
   position: relative;
   width: 100%;
   max-width: 560px;
-  max-height: 88vh;
-  overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
   background: linear-gradient(165deg, var(--color-surface) 0%, var(--color-surface-2) 130%);
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-lg);
-  padding: 34px 30px;
   box-shadow: 0 24px 70px rgba(0,0,0,0.6), var(--shadow-glow-purple);
   transform: translateY(16px) scale(0.98);
   transition: transform 0.25s ease;
 }
-.glass-modal::-webkit-scrollbar { display: none; }
 .modal-overlay.open .glass-modal { transform: translateY(0) scale(1); }
+
+/* the close button lives outside this wrapper so it never scrolls away with
+   the content — this wrapper is the only part that scrolls internally */
+.modal-scroll {
+  max-height: 88vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 34px 30px;
+}
+.modal-scroll::-webkit-scrollbar { display: none; }
 
 .modal-close {
   position: absolute;
@@ -908,8 +913,22 @@ img { max-width: 100%; display: block; }
   .about-grid { grid-template-columns: 1fr; }
   .card-actions { flex-direction: column; }
   .detail-grid { grid-template-columns: 1fr; }
-  .glass-modal { padding: 26px 18px; max-height: 92vh; }
   .modal-title { font-size: 20px; }
+
+  /* prevent the navbar row (logo + Join Waitlist + hamburger) from
+     overflowing past the right edge on narrow phones */
+  .navbar__inner { gap: 8px; }
+  .navbar__actions { gap: 10px; }
+
+  /* mobile browsers report 100vh larger than the actually visible area
+     (address bar etc.) — dvh reflects the real visible viewport, with vh
+     kept as a fallback for browsers that don't support it yet */
+  .modal-overlay { padding: 14px; }
+  .modal-scroll {
+    padding: 26px 18px;
+    max-height: 82vh;
+    max-height: 82dvh;
+  }
 }
 
 @media (max-width: 380px) {
